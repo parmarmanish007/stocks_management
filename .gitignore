@@ -1,0 +1,17 @@
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore the virtual environment
+venv/
+env/
+
+# Ignore database and environment files
+*.sqlite3
+*.db
+
+# Ignore VSCode and JetBrains IDE settings
+.idea/
+
