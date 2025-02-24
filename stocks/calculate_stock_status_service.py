@@ -5,22 +5,35 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from .constanst import TradeTypeConst
+from .messages import StockManagementMessage
 from .models import Transaction
 
 
 class CalculateStockStatusService:
+    """Service to calculate stock status (balance quantity and average buy price)."""
 
     def execute(self, request):
-        """Calculate FIFO based balance quantity and average buy price"""
+        """
+        Calculate FIFO-based balance quantity and average buy price.
+
+        Args:
+            request: The request object containing query parameters.
+
+        Returns:
+            A Response object with calculated stock status or an error message.
+        """
         trade_date = request.query_params.get('trade_date', None)
         company = request.query_params.get('company', None)
         if not trade_date or not company:
-            return Response({"error": "trade_date and company are required."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "error": StockManagementMessage.TRADE_DATE_AND_COMPANY_NAME_REQUIRED},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         try:
             trade_date = timezone.datetime.strptime(trade_date, '%Y-%m-%d').date()
         except ValueError:
-            return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": StockManagementMessage.INVALID_DATE_FORMAT}, status=status.HTTP_400_BAD_REQUEST)
 
         transactions = Transaction.objects.filter(company=company, trade_date__lte=trade_date).order_by('trade_date')
         inventory = []
@@ -51,7 +64,7 @@ class CalculateStockStatusService:
             elif transaction.trade_type == TradeTypeConst.SPLIT.value:
                 ratio_parts = transaction.split_ratio.split(':')
                 if len(ratio_parts) != 2:
-                    return Response({"error": "Invalid split ratio format. Use 'old:new'"},
+                    return Response({"error": StockManagementMessage.INVALID_SPLIT_RATIO_FORMAT},
                                     status=status.HTTP_400_BAD_REQUEST)
 
                 old_ratio, new_ratio = int(ratio_parts[0]), int(ratio_parts[1])
