@@ -71,6 +71,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'stock_management.wsgi.application'
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES":(
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
+    "REFRESH_TOKEN_LIFETIME":timedelta(days=1),
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

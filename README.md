@@ -62,8 +62,59 @@ This project implements a RESTful API using Django REST Framework to manage stoc
     ```
 
 ## API Endpoints
+### 3. User Registration (POST /api/register/)
 
-### 1. Create Transaction (POST /api/transactions/)
+* **Method:** POST
+* **Content-Type:** application/json
+* **Body:**
+
+    ```json
+    {
+        "username": "username",
+        "email": "email address",
+        "password": "password"
+    }
+    ```
+
+* **Example Request Body:**
+
+    ```json
+    {
+        "username": "manish",
+        "email": "parmarmanish0796@gmail.com",
+        "password": "Manish@123"
+    }
+    ```
+
+* **Response:**
+    * Returns user registration details.
+
+### 2. User Login (POST /api/login/)
+
+* **Method:** POST
+* **Content-Type:** application/json
+* **Body:**
+
+    ```json
+    {
+        "username": "username",
+        "password": "password"
+    }
+    ```
+
+* **Example Request Body:**
+
+    ```json
+    {
+        "username": "manish",
+        "password": "Manish@123"
+    }
+    ```
+
+* **Response:**
+    * Returns an authentication token.
+
+### 3. Create Transaction (POST /api/transactions/)
 
 * **Method:** POST
 * **Content-Type:** application/json
@@ -110,7 +161,7 @@ This project implements a RESTful API using Django REST Framework to manage stoc
 * **Response:**
     * Returns the created transaction object.
 
-### 2. Get Portfolio (GET /api/portfolio/)
+### 4. Get Portfolio (GET /api/portfolio/)
 
 * **Method:** GET
 * **Query Parameters:**
